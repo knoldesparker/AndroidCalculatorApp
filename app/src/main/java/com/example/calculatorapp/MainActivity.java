@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.io.CharArrayReader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static String TAG ="MainActivity";
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonDot;
     Button buttonCalc;
     TextView textView;
+    TextView textViewResault;
 
 
     @Override
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDot = findViewById(R.id.btnDot);
         buttonCalc = findViewById(R.id.btnCalculate);
         textView = findViewById(R.id.tvNumbers);
+        textViewResault = findViewById(R.id.tvResault);
 
 
 
@@ -198,12 +202,15 @@ public class MainActivity extends AppCompatActivity {
                 if (numbers.isEmpty()){
                     Log.d(TAG, "ERR: Array is Empty");
                 } else {
+                    numbers.add(textView.getText().toString().trim());
+
 
                 }
             }
         });
 
     }
+
 
 
 
