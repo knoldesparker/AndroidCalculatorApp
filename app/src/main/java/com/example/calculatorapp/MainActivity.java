@@ -1,5 +1,8 @@
 package com.example.calculatorapp;
 
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,10 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.CharArrayReader;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static String TAG ="MainActivity";
@@ -31,13 +31,12 @@ public class MainActivity extends AppCompatActivity {
     Button buttonPlus;
     Button buttonMinus;
     Button buttonDevide;
-    Button buttonDel;
+    Button buttonRSet;
     Button buttonDot;
     Button buttonCalc;
     TextView textView;
-    TextView textViewResault;
 
-
+    public static final String EXTRA_MESSAGE = "This is a message from beoynd";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
         buttonPlus = findViewById(R.id.btnPlus);
         buttonMinus = findViewById(R.id.btnMinus);
         buttonDevide = findViewById(R.id.btnDevide);
-        buttonDel = findViewById(R.id.btnDel);
+        buttonRSet = findViewById(R.id.btnRSet);
         buttonDot = findViewById(R.id.btnDot);
         buttonCalc = findViewById(R.id.btnCalculate);
         textView = findViewById(R.id.tvNumbers);
-        textViewResault = findViewById(R.id.tvResault);
 
 
 
@@ -152,6 +150,25 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "btn9 pressed," + values + textView.getText());
             }
         });
+        button0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int value = 0;
+                values += 0;
+                textView.append(Integer.toString(value));
+                Log.d(TAG, "btn0 pressed, " + values + textView.getText());
+            }
+        });
+        buttonRSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.setText("");
+                numbers.clear();
+                Log.d(TAG, "btnRSet Pressed, Setting textView to '' and clear on arrayList " + "\n" +
+                                "Array is now: " + numbers);
+            }
+        });
+
         buttonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         buttonCalc.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button Calculate Clicked");
@@ -203,11 +221,21 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "ERR: Array is Empty");
                 } else {
                     numbers.add(textView.getText().toString().trim());
-
-
+                    sendMessage();
                 }
+
             }
         });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void sendMessage(){
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+
+        String listString = String.join("", numbers);
+
+       // String message = listString;
+        intent.putExtra(EXTRA_MESSAGE, listString);
+        startActivity(intent);
 
     }
 
